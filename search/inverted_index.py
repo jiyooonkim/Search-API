@@ -1,14 +1,21 @@
 """
-Title : 역색인
+Title : Inverted Index(역색인)
 Date : 2024-01-13 ~
+Desc:
+- 문서를 토큰 단위로 분리하여 inverted index 생성
+- Analyzer
+    - Token filter : 대문자를 소문자화
+    - Tokenizer
+    - Character filter
+- Indexing vs Hashing
+    - Indexing :
+    - Hashing :
 """
-from flask import Flask, request
-import json
-import re
+from pyspark.pandas.DataFrame import set_index
+import pyspark.sql.functions as F
 import os
-os.chdir('../')
+os.chdir('../../')
 from search import CreateData
-
 input_path = ""
 
 # import yaml
@@ -16,13 +23,17 @@ input_path = ""
 # with open('conf.yaml', 'r') as f:
 #     config = yaml.load(f)
 # print(config['1st_key']) # value_1
-input_path = "/Users/jy_kim/Documents/private/SearchAPI/data/prod/nvr_prod.csv"
-# todo 경로 왜 안먹히냐... 아...
+input_path = "SearchAPI/data/prod/nvr_prod.csv"
+
+def tokenizer(df):
+    return 0
+
+
 
 if __name__ == '__main__':
-    print(os.getcwd())
-    # print(CreateData.save_data())
-    # print(CreateData.init_spark_session())
-    print(CreateData().read_data(file_path=input_path, file_type="csv", header=None))
+    df = CreateData().read_data(file_path=input_path, file_type="csv", header=True)
+    prod_df = df.select(F.col('상품명'), F.explode(F.split(F.col('상품명'), " ")).alias('tokens'))
+    prod_df.withColumn("idx", set_index(F.col('상품명'))).show()
+    # todo  : 상품명 기준 인덱스 생성
 
     exit(0)

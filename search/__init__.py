@@ -29,10 +29,10 @@ class CreateData:
             .getOrCreate()
         return spark
 
-    def read_data(self, file_path=str, file_type="parquet", header=None):
+    def read_data(self, file_path=str, file_type="parquet", header=True):
         spark = self.init_spark_session()
         if file_type == 'parquet':
             df = spark.read.parquet(file_path)
         elif file_type == 'csv':
-            df = spark.read.csv(file_path)
+            df = spark.read.option('header', header).csv(file_path)
         return df
