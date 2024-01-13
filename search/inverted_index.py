@@ -21,7 +21,7 @@ input_path = "/Users/jy_kim/Documents/private/SearchAPI/data/prod/nvr_prod.csv"
 
 if __name__ == '__main__':
     print(os.getcwd())
-    # # print(CreateData.save_data())
+    # print(CreateData.save_data())
     # print(CreateData.init_spark_session())
     print(CreateData().read_data(file_path=input_path, file_type="csv", header=None))
 
